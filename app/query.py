@@ -38,42 +38,53 @@ class QueryService:
 
     async def _call_gpt5(self, query: str) -> str:
         """Call GPT-5 with Lark grammar constraint."""
-        response = await self.openai_client.chat.completions.create(
-            model="gpt-5",
-            messages=[
-                {
-                    "role": "system",
-                    "content": (
-                        "You are a SQL query generator for a ClickHouse database. "
-                        "The database has a single table called 'orders' with columns: "
-                        "order_id (String), customer_id (String), product_name (String), "
-                        "category (String), quantity (UInt32), unit_price (Float64), "
-                        "total_amount (Float64), order_date (DateTime), country (String). "
-                        "Convert the user's natural language question into a valid SELECT query."
-                    )
-                },
-                {"role": "user", "content": query}
-            ],
-            response_format={
-                "type": "grammar",
-                "grammar": {
-                    "type": "lark",
-                    "value": self.grammar
+        try:
+            response = await self.openai_client.chat.completions.create(
+                model="gpt-5",
+                messages=[
+                    {
+                        "role": "system",
+                        "content": (
+                            "You are a SQL query generator for a ClickHouse database. "
+                            "The database has a single table called 'orders' with columns: "
+                            "order_id (String), customer_id (String), product_name (String), "
+                            "category (String), quantity (UInt32), unit_price (Float64), "
+                            "total_amount (Float64), order_date (DateTime), country (String). "
+                            "Convert the user's natural language question into a valid SELECT query."
+                        )
+                    },
+                    {"role": "user", "content": query}
+                ],
+                response_format={
+                    "type": "grammar",
+                    "grammar": {
+                        "type": "lark",
+                        "value": self.grammar
+                    }
                 }
-            }
-        )
+            )
 
-        return response.choices[0].message.content.strip()
+            content = response.choices[0].message.content
+            if content is None:
+                raise ValueError("GPT-5 returned empty response")
+            return content.strip()
+        except Exception as e:
+            raise RuntimeError(f"GPT-5 query generation failed: {str(e)}") from e
 
     async def _call_tinybird(self, sql: str) -> dict:
         """Execute SQL query via Tinybird REST API."""
-        async with httpx.AsyncClient() as client:
-            response = await client.post(
-                f"{self.tinybird_host}/v0/sql",
-                headers={
-                    "Authorization": f"Bearer {self.tinybird_token}"
-                },
-                params={"q": sql}
-            )
-            response.raise_for_status()
-            return response.json()
+        try:
+            async with httpx.AsyncClient(timeout=30.0) as client:
+                response = await client.post(
+                    f"{self.tinybird_host}/v0/sql",
+                    headers={
+                        "Authorization": f"Bearer {self.tinybird_token}"
+                    },
+                    params={"q": sql}
+                )
+                response.raise_for_status()
+                return response.json()
+        except httpx.HTTPStatusError as e:
+            raise RuntimeError(f"Tinybird query failed: {e.response.text}") from e
+        except httpx.RequestError as e:
+            raise RuntimeError(f"Failed to connect to Tinybird: {str(e)}") from e
