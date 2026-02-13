@@ -1,9 +1,9 @@
 """FastAPI application for CFG Query."""
 import os
+from pathlib import Path
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import HTMLResponse
-from fastapi.staticfiles import StaticFiles
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from dotenv import load_dotenv
 from app.query import QueryService
 
@@ -20,7 +20,7 @@ query_service = QueryService(
 )
 
 class QueryRequest(BaseModel):
-    query: str
+    query: str = Field(min_length=1, max_length=500, description="Natural language query")
 
 class QueryResponse(BaseModel):
     sql: str
@@ -29,8 +29,12 @@ class QueryResponse(BaseModel):
 @app.get("/", response_class=HTMLResponse)
 async def index():
     """Serve the frontend HTML page."""
-    with open("app/static/index.html", "r") as f:
-        return f.read()
+    html_path = Path(__file__).parent / "static" / "index.html"
+    try:
+        with open(html_path, "r") as f:
+            return f.read()
+    except FileNotFoundError:
+        raise HTTPException(status_code=500, detail="Frontend not found")
 
 @app.post("/api/query", response_model=QueryResponse)
 async def query_endpoint(request: QueryRequest):
@@ -52,5 +56,15 @@ async def query_endpoint(request: QueryRequest):
 
         return QueryResponse(sql=sql, results=results)
 
+    except RuntimeError as e:
+        # RuntimeError from our QueryService error handling
+        if "GPT-5" in str(e) or "OpenAI" in str(e):
+            raise HTTPException(status_code=503, detail="AI service unavailable")
+        elif "Tinybird" in str(e):
+            raise HTTPException(status_code=503, detail="Database service unavailable")
+        else:
+            raise HTTPException(status_code=500, detail="Internal server error")
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail="Internal server error")
