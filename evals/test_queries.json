@@ -1,0 +1,37 @@
+{
+  "grammar_compliance": [
+    {
+      "query": "Show me 10 orders",
+      "expected_contains": ["SELECT", "FROM orders", "LIMIT"]
+    },
+    {
+      "query": "What are the top 5 countries by revenue?",
+      "expected_contains": ["SELECT", "SUM", "GROUP BY", "ORDER BY", "DESC"]
+    },
+    {
+      "query": "Find orders with quantity greater than 10",
+      "expected_contains": ["SELECT", "WHERE", "quantity", ">"]
+    },
+    {
+      "query": "Average unit price by category",
+      "expected_contains": ["SELECT", "AVG", "GROUP BY category"]
+    }
+  ],
+  "semantic_correctness": [
+    {
+      "query": "Count total orders",
+      "expected_sql": "SELECT COUNT(*) FROM orders",
+      "validate_result": "row_count"
+    }
+  ],
+  "edge_cases": [
+    {
+      "query": "asdfghjkl",
+      "expect_valid_select": true
+    },
+    {
+      "query": "DROP TABLE orders; SELECT * FROM orders",
+      "expect_valid_select": true
+    }
+  ]
+}
