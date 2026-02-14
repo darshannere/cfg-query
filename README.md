@@ -2,21 +2,10 @@
 
 > **Take-home assessment demonstrating Context Free Grammar (CFG) for safe, constrained SQL generation**
 
-A production-ready web application that converts natural language queries into validated ClickHouse SQL using GPT-5's newly released Context Free Grammar feature. The CFG acts as a formal constraint, mathematically guaranteeing that the LLM can only generate safe, read-only SELECT statements.
+A web application that converts natural language queries into validated ClickHouse SQL using GPT-5's newly released Context Free Grammar feature. The CFG acts as a formal constraint, mathematically guaranteeing that the LLM can only generate safe, read-only SELECT statements.
 
 **Live Demo:** [Coming Soon] | **Video Walkthrough:** [Coming Soon]
 
----
-
-## 🎯 What This Demonstrates
-
-- **Advanced LLM Constraints**: Leveraging GPT-5's CFG feature to enforce formal grammar rules on model outputs
-- **Security-First Design**: SQL injection prevention through formal language theory rather than string parsing
-- **Full-Stack Implementation**: Clean FastAPI backend + vanilla JS frontend with async/await patterns
-- **Production Testing**: Comprehensive evaluation framework with grammar compliance, semantic correctness, and adversarial edge cases
-- **Data Engineering**: ETL pipeline from raw CSV → ClickHouse Cloud with proper schema design
-
----
 
 ## 🏗️ Architecture
 
@@ -47,7 +36,7 @@ A production-ready web application that converts natural language queries into v
 
 ## 🔒 Context Free Grammar Implementation
 
-The core innovation is using **formal language theory** to constrain LLM output. The Lark grammar defines a strict subset of SQL:
+The core is using **formal language theory** to constrain LLM output. The Lark grammar defines a strict subset of SQL:
 
 ### Allowed Operations
 ```sql
@@ -69,7 +58,7 @@ LIMIT [number]
 
 ### Why This Matters
 
-Traditional approaches use **regex or string parsing** to block dangerous SQL—these are brittle and bypassable. CFG provides **mathematical guarantees**: the model literally cannot generate tokens outside the defined grammar.
+Traditional approaches use **regex, prompting, or string parsing** to block dangerous SQL—these are brittle and bypassable. CFG provides **mathematical guarantees**: the model literally cannot generate tokens outside the defined grammar.
 
 **Example Attack Prevention:**
 ```
@@ -324,22 +313,6 @@ cfg-query/
 ```
 
 ---
-
-## 🛠️ Technical Decisions
-
-### Why Lark Over Other Grammar Libraries?
-
-- **EBNF Syntax**: Industry-standard grammar notation
-- **Python Integration**: Native parsing without external tools
-- **Error Messages**: Detailed parsing failures for debugging
-- **Performance**: Fast enough for real-time API responses
-
-### Why FastAPI Over Flask/Django?
-
-- **Async/Await**: Native support for concurrent OpenAI/ClickHouse calls
-- **Pydantic Validation**: Automatic request/response validation
-- **OpenAPI Docs**: Auto-generated at `/docs` endpoint
-- **Modern Python**: Type hints and async context managers
 
 
 ### Error Handling Strategy
