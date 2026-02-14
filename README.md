@@ -1,10 +1,7 @@
 # CFG Query: Natural Language to SQL with GPT-5
 
-> **Take-home assessment demonstrating Context Free Grammar (CFG) for safe, constrained SQL generation**
-
 A web application that converts natural language queries into validated ClickHouse SQL using GPT-5's newly released Context Free Grammar feature. The CFG acts as a formal constraint, mathematically guaranteeing that the LLM can only generate safe, read-only SELECT statements.
 
-**Live Demo:** [Coming Soon] | **Video Walkthrough:** [Coming Soon]
 
 
 ## 🏗️ Architecture
@@ -99,7 +96,7 @@ CREATE TABLE orders (
 Three comprehensive test suites prove the CFG works correctly:
 
 ### 1. Grammar Compliance Tests
-Validates that generated SQL **parses successfully** with the Lark grammar.
+Validates that the generated SQL **parses successfully** with the Lark grammar.
 
 **Test Cases (4)**:
 - "Show me 10 orders" → must contain `LIMIT`
