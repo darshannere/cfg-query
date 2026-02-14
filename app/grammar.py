@@ -7,57 +7,56 @@ def get_clickhouse_grammar() -> str:
     Allows: SELECT with columns, aggregations, WHERE, GROUP BY, ORDER BY, LIMIT
     Prevents: DROP, INSERT, UPDATE, DELETE, subqueries, joins, UNION
     """
-    return r"""
-    ?query: select_stmt
+    return r"""start: select_stmt
 
-    select_stmt: "SELECT" select_list "FROM" table_name [where_clause] [group_by_clause] [order_by_clause] [limit_clause]
+select_stmt: "SELECT" select_list "FROM" table_name [where_clause] [group_by_clause] [order_by_clause] [limit_clause]
 
-    select_list: "*" | column_expr ("," column_expr)*
+select_list: "*" | column_expr ("," column_expr)*
 
-    column_expr: aggregate_func "(" (column_name | "*") ")" [alias]
-               | column_name [alias]
+column_expr: aggregate_func "(" (column_name | "*") ")" [alias]
+           | column_name [alias]
 
-    aggregate_func: "SUM" | "COUNT" | "AVG" | "MIN" | "MAX"
+aggregate_func: "SUM" | "COUNT" | "AVG" | "MIN" | "MAX"
 
-    alias: "AS" CNAME
+alias: "AS" CNAME
 
-    table_name: "orders"
+table_name: "orders"
 
-    where_clause: "WHERE" condition
+where_clause: "WHERE" condition
 
-    condition: comparison
-             | condition "AND" condition
-             | condition "OR" condition
-             | "(" condition ")"
+condition: comparison
+         | condition "AND" condition
+         | condition "OR" condition
+         | "(" condition ")"
 
-    comparison: column_name op value
-              | column_name ">" value
-              | column_name "<" value
-              | column_name ">=" value
-              | column_name "<=" value
-              | column_name "=" value
-              | column_name "!=" value
+comparison: column_name op value
+          | column_name ">" value
+          | column_name "<" value
+          | column_name ">=" value
+          | column_name "<=" value
+          | column_name "=" value
+          | column_name "!=" value
 
-    op: ">" | "<" | ">=" | "<=" | "=" | "!="
+op: ">" | "<" | ">=" | "<=" | "=" | "!="
 
-    value: SIGNED_NUMBER
-         | STRING
+value: SIGNED_NUMBER
+     | STRING
 
-    group_by_clause: "GROUP BY" column_name ("," column_name)*
+group_by_clause: "GROUP BY" column_name ("," column_name)*
 
-    order_by_clause: "ORDER BY" column_name [sort_order] ("," column_name [sort_order])*
+order_by_clause: "ORDER BY" column_name [sort_order] ("," column_name [sort_order])*
 
-    sort_order: "ASC" | "DESC"
+sort_order: "ASC" | "DESC"
 
-    limit_clause: "LIMIT" INT
+limit_clause: "LIMIT" INT
 
-    column_name: CNAME
+column_name: CNAME
 
-    STRING: /'[^']*'/ | /"[^"]*"/
+STRING: /'[^']*'/ | /"[^"]*"/
 
-    %import common.CNAME
-    %import common.INT
-    %import common.SIGNED_NUMBER
-    %import common.WS
-    %ignore WS
-    """
+%import common.CNAME
+%import common.INT
+%import common.SIGNED_NUMBER
+%import common.WS
+%ignore WS
+"""

@@ -7,8 +7,9 @@ from app.query import QueryService
 async def test_generate_sql_returns_valid_select():
     service = QueryService(
         openai_api_key="test-key",
-        tinybird_token="test-token",
-        tinybird_host="https://api.tinybird.co"
+        clickhouse_key_id="test-key-id",
+        clickhouse_key_secret="test-key-secret",
+        clickhouse_url="https://queries.clickhouse.cloud/service/test/run"
     )
 
     with patch.object(service, '_call_gpt5', new_callable=AsyncMock) as mock_gpt:
@@ -23,12 +24,13 @@ async def test_generate_sql_returns_valid_select():
 async def test_execute_query_returns_results():
     service = QueryService(
         openai_api_key="test-key",
-        tinybird_token="test-token",
-        tinybird_host="https://api.tinybird.co"
+        clickhouse_key_id="test-key-id",
+        clickhouse_key_secret="test-key-secret",
+        clickhouse_url="https://queries.clickhouse.cloud/service/test/run"
     )
 
-    with patch.object(service, '_call_tinybird', new_callable=AsyncMock) as mock_tb:
-        mock_tb.return_value = {
+    with patch.object(service, '_call_clickhouse', new_callable=AsyncMock) as mock_ch:
+        mock_ch.return_value = {
             "data": [
                 {"order_id": "1", "total_amount": 100.0},
                 {"order_id": "2", "total_amount": 200.0}
@@ -40,4 +42,4 @@ async def test_execute_query_returns_results():
 
         assert len(results["data"]) == 2
         assert results["data"][0]["order_id"] == "1"
-        mock_tb.assert_called_once_with(sql)
+        mock_ch.assert_called_once_with(sql)

@@ -15,8 +15,9 @@ app = FastAPI(title="CFG Query App")
 # Use dummy values for testing - will be mocked in tests
 query_service = QueryService(
     openai_api_key=os.getenv("OPENAI_API_KEY", "test-key"),
-    tinybird_token=os.getenv("TINYBIRD_TOKEN", "test-token"),
-    tinybird_host=os.getenv("TINYBIRD_HOST", "https://api.tinybird.co")
+    clickhouse_key_id=os.getenv("CLICKHOUSE_KEY_ID", "test-key-id"),
+    clickhouse_key_secret=os.getenv("CLICKHOUSE_KEY_SECRET", "test-key-secret"),
+    clickhouse_url=os.getenv("CLICKHOUSE_URL", "https://queries.clickhouse.cloud"),
 )
 
 class QueryRequest(BaseModel):
@@ -60,7 +61,7 @@ async def query_endpoint(request: QueryRequest):
         # RuntimeError from our QueryService error handling
         if "GPT-5" in str(e) or "OpenAI" in str(e):
             raise HTTPException(status_code=503, detail="AI service unavailable")
-        elif "Tinybird" in str(e):
+        elif "ClickHouse" in str(e):
             raise HTTPException(status_code=503, detail="Database service unavailable")
         else:
             raise HTTPException(status_code=500, detail="Internal server error")

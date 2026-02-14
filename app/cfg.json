@@ -1,0 +1,110 @@
+{
+  "start": "query",
+  "rules": {
+    "query": [
+      ["SELECT", "select_list", "FROM", "orders", "optional_where", "optional_group_by", "optional_order_by", "optional_limit"]
+    ],
+
+    "select_list": [
+      ["*"],
+      ["column_expr"],
+      ["column_expr", ",", "column_expr"]
+    ],
+
+    "column_expr": [
+      ["aggregate_func", "(", "column_name", ")", "optional_alias"],
+      ["aggregate_func", "(", "*", ")", "optional_alias"],
+      ["column_name", "optional_alias"]
+    ],
+
+    "aggregate_func": [
+      ["SUM"],
+      ["COUNT"],
+      ["AVG"],
+      ["MIN"],
+      ["MAX"]
+    ],
+
+    "optional_alias": [
+      [],
+      ["AS", "alias_name"]
+    ],
+
+    "alias_name": [
+      ["total"],
+      ["count"],
+      ["avg"]
+    ],
+
+    "column_name": [
+      ["order_total"],
+      ["order_time"],
+      ["country"]
+    ],
+
+    "optional_where": [
+      [],
+      ["WHERE", "comparison"]
+    ],
+
+    "comparison": [
+      ["column_name", "op", "value"]
+    ],
+
+    "op": [
+      [">"],
+      ["<"],
+      [">="],
+      ["<="],
+      ["="],
+      ["!="]
+    ],
+
+    "value": [
+      ["number"],
+      ["string"]
+    ],
+
+    "number": [
+      ["1"],
+      ["10"],
+      ["24"],
+      ["30"],
+      ["50"],
+      ["100"]
+    ],
+
+    "string": [
+      ["'US'"],
+      ["'CA'"],
+      ["'IN'"]
+    ],
+
+    "optional_group_by": [
+      [],
+      ["GROUP", "BY", "column_name"]
+    ],
+
+    "optional_order_by": [
+      [],
+      ["ORDER", "BY", "column_name", "optional_sort"]
+    ],
+
+    "optional_sort": [
+      [],
+      ["ASC"],
+      ["DESC"]
+    ],
+
+    "optional_limit": [
+      [],
+      ["LIMIT", "limit_value"]
+    ],
+
+    "limit_value": [
+      ["10"],
+      ["50"],
+      ["100"]
+    ]
+  }
+}

@@ -1,0 +1,14 @@
+{
+    "host": "https://api.us-east.aws.tinybird.co",
+    "id": "01d79fe3-9f00-474c-8cff-d3808ec55b57",
+    "name": "trying",
+    "scope": "user",
+    "token": "p.eyJ1IjogIjAxZDc5ZmUzLTlmMDAtNDc0Yy04Y2ZmLWQzODA4ZWM1NWI1NyIsICJpZCI6ICJjNzUxN2Y1Yy04ODA0LTQxZjQtOTMwMS02MmNmN2ViOThmNjIiLCAiaG9zdCI6ICJ1cy1lYXN0LWF3cyJ9.dKo28qUabsqhTaDTHLPfJGC4zcgTiE489OsUq0KDAUM",
+    "tokens": {
+        "https://api.us-east.aws.tinybird.co": "p.eyJ1IjogIjAxZDc5ZmUzLTlmMDAtNDc0Yy04Y2ZmLWQzODA4ZWM1NWI1NyIsICJpZCI6ICJjNzUxN2Y1Yy04ODA0LTQxZjQtOTMwMS02MmNmN2ViOThmNjIiLCAiaG9zdCI6ICJ1cy1lYXN0LWF3cyJ9.dKo28qUabsqhTaDTHLPfJGC4zcgTiE489OsUq0KDAUM"
+    },
+    "user_email": "darshan.nere@gmail.com",
+    "user_id": "5b4a942f-ee93-4e8e-b4d3-b8c0e97b2e1a",
+    "user_token": "p.eyJ1IjogIjViNGE5NDJmLWVlOTMtNGU4ZS1iNGQzLWI4YzBlOTdiMmUxYSIsICJpZCI6ICI4NWU0NGQ3Yi1hZjlmLTQ0YjUtOGM3ZS05ZmY5OTY3YTNjM2IiLCAiaG9zdCI6ICJ1cy1lYXN0LWF3cyJ9.4AAzA1V13fFZLisEc1ptdAd58_3p0puoIV9osFcQDeo",
+    "version": "3.3.0"
+}
