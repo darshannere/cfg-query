@@ -14,8 +14,6 @@ load_dotenv()
 
 app = FastAPI(title="CFG Query App")
 
-# Initialize query service
-# Use dummy values for testing - will be mocked in tests
 query_service = QueryService(
     openai_api_key=os.getenv("OPENAI_API_KEY", "test-key"),
     clickhouse_key_id=os.getenv("CLICKHOUSE_KEY_ID", "test-key-id"),

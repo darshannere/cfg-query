@@ -23,9 +23,9 @@ A production-ready web application that converts natural language queries into v
 ```
 ┌─────────┐      ┌──────────┐      ┌─────────────┐      ┌────────────┐
 │ Browser │─────▶│ FastAPI  │─────▶│   GPT-5     │─────▶│ ClickHouse │
-│  (UI)   │      │ /api/query│      │ + CFG       │      │   Cloud    │
+│  (UI)   │      │/api/query│      │ + CFG       │      │   Cloud    │
 └─────────┘      └──────────┘      │ (Lark)      │      └────────────┘
-                                    └─────────────┘
+                                   └─────────────┘
                                            │
                                            ▼
                                     Only valid SELECT
@@ -341,12 +341,6 @@ cfg-query/
 - **OpenAPI Docs**: Auto-generated at `/docs` endpoint
 - **Modern Python**: Type hints and async context managers
 
-### Why ClickHouse Over PostgreSQL?
-
-- **Analytical Workloads**: Optimized for aggregation queries (GROUP BY, SUM)
-- **Columnar Storage**: Efficient for read-heavy operations
-- **Cloud-Native**: REST API without driver installation
-- **JSON Format**: Native JSONEachRow format for easy parsing
 
 ### Error Handling Strategy
 
@@ -358,81 +352,3 @@ Exception    → 500 Internal Server      # Unexpected errors
 
 ---
 
-## 🔮 Future Improvements
-
-### Short Term
-- [ ] Deploy to Railway/Render with public URL
-- [ ] Add query history with localStorage
-- [ ] Support for date range queries (BETWEEN)
-- [ ] Export results as CSV/JSON
-
-### Medium Term
-- [ ] Extend grammar to support multiple tables with JOIN
-- [ ] Add caching layer (Redis) for repeated queries
-- [ ] Rate limiting with Redis
-- [ ] Query cost estimation before execution
-
-### Long Term
-- [ ] Multi-tenant support with user authentication
-- [ ] Custom grammar definition UI for non-technical users
-- [ ] Query visualization (charts/graphs)
-- [ ] Streaming results for large datasets
-
----
-
-## 📚 Key Dependencies
-
-```txt
-fastapi==0.129.0           # Modern async web framework
-openai==2.21.0             # GPT-5 Responses API with CFG support
-lark==1.3.1                # Grammar parsing (EBNF/Lark syntax)
-httpx==0.28.1              # Async HTTP client for ClickHouse
-pydantic==2.12.5           # Data validation and settings
-pytest==9.0.2              # Testing framework
-pandas==3.0.0              # Data preprocessing
-uvicorn==0.40.0            # ASGI server
-```
-
----
-
-## 🎥 Video Walkthrough
-
-**[Link to Loom/YouTube video explaining:]**
-- Architecture and design decisions
-- CFG implementation and security model
-- Live demo of the application
-- Evaluation framework walkthrough
-- Code structure tour
-
----
-
-## 👤 About
-
-Built by **[Your Name]** as a take-home assessment for founding engineer role.
-
-**Timeline**: Completed in ~6.5 hours over 3 days
-**Focus Areas**: LLM safety, formal methods, full-stack development, testing
-
-### Contact
-- GitHub: [@yourusername](https://github.com/yourusername)
-- Email: your.email@example.com
-- LinkedIn: [Your Profile](https://linkedin.com/in/yourprofile)
-
----
-
-## 📄 License
-
-MIT License - see [LICENSE](LICENSE) for details
-
----
-
-## 🙏 Acknowledgments
-
-- OpenAI for GPT-5 and CFG documentation
-- ClickHouse team for excellent cloud platform
-- Kaggle for the Online Retail dataset
-- Lark library maintainers
-
----
-
-**⭐ If you found this interesting, please star the repo!**
